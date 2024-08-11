@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1.0" />
+    <link
+      rel="stylesheet"
+      href="./assets/bootstrap-5.3.2-dist/css/bootstrap.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/fontawesome-free-6.4.2-web/css/all.min.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/css/style.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/css/drawer.css" />
+    <link
+      rel="stylesheet"
+      href="./assets/css/calendar.css" />
+    <title>Dashboard</title>
+  </head>
+
+  <body class="body">
+    <div class="container-fluid w-100 h-100">
+      <!-- Start nav bar -->
+      <nav
+        class="navbar navbar-expand-lg fixed-top z-3 bg-black"
+        id="navbar">
+        <!-- Use any element to open the sidenav -->
+        <span
+          onclick="openNav()"
+          class="openNav"
+          ><i class="fa-solid fa-bars fs-3"></i
+        ></span>
+
+        <div class="container-fluid">
+          <a
+            class="navbar-brand ms-5 mb-lg-2 mb-sm-5"
+            href="index.php"
+            ><img src="./assets/img/logo-nobg.png"
+          /></a>
+          <button
+            class="navbar-toggler mb-sm-5 mb-md-5"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent"
+            aria-expanded="false"
+            aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+          </button>
+          <div
+            class="collapse navbar-collapse"
+            id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+              <li class="nav-item">
+                <a
+                  data-bs-toggle="tooltip"
+                  data-bs-placement="top"
+                  data-bs-custom-class="custom-tooltip"
+                  data-bs-title="Tela principal"
+                  class="nav-link active text-white"
+                  aria-current="page"
+                  href="index.php"
+                  ><i class="fa-solid fa-house me-2"></i>Home</a
+                >
+              </li>
+            </ul>
+            <div
+              class="me-auto w-50 position-relative"
+              role="search">
+              <input
+                class="form-control w-100"
+                type="search"
+                placeholder="Pesquise aqui"
+                aria-label="Search"
+                id="search" />
+              <div
+                class="search-result w-100 position-absolute mt-2 rounded-3 overflow-y-scroll"
+                id="pesquisa"></div>
+            </div>
+
+            <img
+              class="usr-profile-image"
+              src="./images/usuarios/{{activeId}}/{{activeUserImg}}"
+              alt=""
+              srcset="" />
+
+            <ul class="navbar-nav mb-2 mb-lg-0 me-5">
+              <li class="nav-item dropdown me-5">
+                <a
+                  class="nav-link dropdown-toggle text-white"
+                  href="#"
+                  role="button"
+                  data-bs-toggle="dropdown"
+                  aria-expanded="false">
+                  {{activeUser}}
+                </a>
+                <ul class="dropdown-menu">
+                  <li>
+                    <a
+                      data-bs-toggle="tooltip"
+                      data-bs-placement="top"
+                      data-bs-custom-class="custom-tooltip"
+                      data-bs-title="Fazer logout"
+                      class="dropdown-item"
+                      href="./functions/logout.php"
+                      >sair</a
+                    >
+                  </li>
+                  <li>
+                    <hr class="dropdown-divider" />
+                  </li>
+                  <li>
+                    <a
+                      class="dropdown-item"
+                      href="#"
+                      >opções</a
+                    >
+                  </li>
+                </ul>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <!-- end navbar -->
+
+      <div
+        id="mySidenav"
+        class="sidenav">
+        <a
+          href="javascript:void(0)"
+          class="closebtn"
+          onclick="closeNav()"
+          ><i class="text-white fs-3 fa-solid fa-xmark"></i
+        ></a>
+        <ul class="pt-3">
+          <li class="fs-4">
+            <a href="index.php?page=evento&action=view&id={{activeId}}"><i class="fs-4 fa-solid fa-calendar-check me-3"></i>Gerir meus eventos</a>
+          </li>
+          <li class="fs-4">
+            <a href="index.php?page=user&action=view&id={{activeId}}"><i class="fs-4 fa-solid fa-circle-info me-3"></i>Dados</a>
+          </li>
+          <li class="fs-4">
+            <a href="index.php?page=evento&action=calendario&id={{activeId}}"><i class="fs-4 fa-regular fa-calendar-days me-3"></i>Agenda</a>
+          </li>
+        </ul>
+      </div>
+      <!-- Add all page content inside this div if you want the side nav to push page content to the right (not used if you only want the sidenav to sit on top of the page -->
+      <div
+        id="main"
+        class="container-fluid d-flex flex-column">
+        {{pageContent}}
+      </div>
+    </div>
+    <footer class="container d-flex align-items-center justify-content-center text-light w-75 flex-column">
+      <div class="d-flex justify-content-between gap-3 my-3">
+        <a
+          href="https://www.linkedin.com/in/celso-soares-50948ba4?lipi=urn%3Ali%3Apage%3Ad_flagship3_profile_view_base_contact_details%3BRJHm8MfzTVO0yqoCIO1Hrw%3D%3D"
+          class="text-secondary"
+          ><i class="fs-3 fa-brands fa-linkedin"></i>
+        </a>
+        <a
+          href="https://twitter.com/celsosoares828"
+          class="text-secondary"
+          ><i class="fs-3 fa-brands fa-twitter"></i
+        ></a>
+        <a
+          href=""
+          class="text-secondary"
+          ><i class="fs-3 fa-brands fa-instagram"></i
+        ></a>
+      </div>
+      <span>Todos os direitos reservados &copy; Celso Soares</span>
+    </footer>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"></script>
+    <script src="./assets/bootstrap-5.3.2-dist/js/bootstrap.js"></script>
+    <script src="./assets/fontawesome-free-6.4.2-web/js/all.js"></script>
+    <script src="./assets/js/script.js"></script>
+    <script src="./assets/js/calendar.js"></script>
+    <script src="./assets/js/core/locales-all.global.min.js"></script>
+    <script src="./assets/js/index.global.min.js"></script>
+    <script src="./assets/js/pesquisar.js"></script>
+  </body>
+</html>

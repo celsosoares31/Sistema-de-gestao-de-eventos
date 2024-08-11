@@ -1,0 +1,78 @@
+<h1><strong class="fs-2">Dados do Usuário</strong></h1>
+<hr />
+<div class="w-100 h-in d-flex gap-4 container-fluid flex-row">
+  <div class="card position-relative w-45">
+    <img
+      class="card-img-top img-top"
+      src="./images/pagina/page_back.jpg" />
+    <div class="card-body mt-0">
+      <div class="w-100 d-flex justify-content-center">
+        <img
+          src="./images/usuarios/{{usuario.id}}/{{usuario.profile_pic}}"
+          alt=""
+          srcset=""
+          class="profile-image shadow" />
+      </div>
+      <div class="p-4">
+        <h5 class="mt-5">Nome: <span class="ms-3 text-black-50">{{usuario.nome_usuario}}</span></h5>
+        <h5 class="mt-2">Email: <span class="ms-3 text-black-50">{{usuario.email}}</span></h5>
+        <h5 class="mt-2">Data de registo:<span class="ms-3 text-black-50">{{usuario.created_at}}</span></h5>
+      </div>
+    </div>
+  </div>
+  <div class="h-100 d-flex flex-column container-fluid">
+    <h4 class="py-4">
+      <strong class="fs-4">Minhas Inscrições</strong>
+    </h4>
+    <div>
+      <table class="table w-100 h-100 table-hover">
+        <thead>
+          <tr>
+            <th></th>
+            <th
+              class="text-center"
+              colspan="2">
+              Inicio
+            </th>
+
+            <th
+              class="text-center"
+              colspan="2">
+              Termino
+            </th>
+
+            <th></th>
+          </tr>
+          <tr>
+            <th>Titulo do evento</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Data</th>
+            <th>Hora</th>
+            <th>Local</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for inscricao in inscricoes %}
+          <tr>
+            <td>{{inscricao.nome}}</td>
+            <td>{{inscricao.data_inicio}}</td>
+            <td>{{inscricao.hora_inicio}}</td>
+            <td>{{inscricao.data_final}}</td>
+            <td>{{inscricao.hora_final}}</td>
+            <td>{{inscricao.local}}</td>
+          </tr>
+          {% else %}
+          <tr>
+            <td
+              class="text-danger text-center"
+              colspan="6">
+              <h4 class="fs-4">Não existe nenhum evento activo em esteja a participar.</h4>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>

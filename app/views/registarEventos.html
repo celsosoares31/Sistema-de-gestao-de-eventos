@@ -1,0 +1,623 @@
+<h1><strong class="fs-1">Gestão de eventos</strong></h1>
+<hr />
+<!-- Conteudo da pagina -->
+<div class="w-100 h-in">
+  <button
+    class="btn btn-outline-success my-4"
+    data-bs-toggle="modal"
+    data-bs-target="#example">
+    Novo Evento
+  </button>
+  <div class="content-wrapper">
+    <div>
+      <h1 class="fs-2">Eventos activos</h1>
+      <div>
+        <table class="table shadow table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Titulo do Evento</th>
+              <th scope="col">Inscritos</th>
+              <th scope="col">Inicio</th>
+              <th scope="col">Fim</th>
+              <th scope="col">Local do Evento</th>
+              <th scope="col">Status</th>
+              <th
+                scope="col"
+                class="text-center">
+                Acções
+              </th>
+            </tr>
+          </thead>
+          <tbody class="">
+            {% for evento in eventosActivos %}
+            <tr>
+              <td>{{evento.nome}}</td>
+              <td>{{evento.totalInscritos}}</td>
+              <td>
+                <span class="">{{evento.data_inicio}} | </span>
+                <span class="text-end fs-7">{{evento.hora_inicio}} min</span>
+              </td>
+              <td>
+                <span class="">{{evento.data_fim}} | </span>
+                <span class="text-end fs-7">{{evento.hora_fim}} min</span>
+              </td>
+              <td>{{evento.local}}</td>
+              <td>{{evento.estado_evento}}</td>
+              <td class="p-2 d-flex">
+                <span
+                  class="btn btn-outline-danger me-2 w-50"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal1"
+                  ><i class="fa-solid fa-trash-can"></i>
+                </span>
+                <span
+                  class="btn btn-outline-dark w-50"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleEditar">
+                  <i class="fa-solid fa-pen-to-square"></i>
+                </span>
+              </td>
+            </tr>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal1"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog pt-5 mt-5">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1
+                      class="modal-title fs-5"
+                      id="exampleModalLabel">
+                      Eliminar evento
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">Tem certeza que pretende apagar este evento?</div>
+                  <div class="modal-footer">
+                    <button
+                      onclick="openModal(false);"
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal">
+                      Não
+                    </button>
+                    <a
+                      href="index.php?page=evento&action=delete&id={{evento.evento_id}}"
+                      class="btn btn-primary"
+                      >Sim</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal editar eventos -->
+            <div
+              class="modal fade w-100"
+              id="exampleEditar"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog pt-5">
+                <div class="modal-content w-100">
+                  <div class="modal-header">
+                    <h1
+                      class="modal-title fs-3"
+                      id="exampleModalLabel">
+                      Cadastrar evento
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close me-3"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body p-4 w-100">
+                    <form
+                      onSubmit="return validate(this);"
+                      class="w-100"
+                      id="form"
+                      method="POST"
+                      enctype="multipart/form-data">
+                      <div class="form-group my-2 row">
+                        <div class="col-12">
+                          <input
+                            class="form-control"
+                            type="text"
+                            name="nome"
+                            value="{{evento.nome}}"
+                            placeholder="Titulo do Evento"
+                            id="nome"
+                            maxlength="35"
+                            required />
+                        </div>
+                        <div class="d-flex flex-lg-row flex-sm-column justify-content-between gap-2">
+                          <div class="col-lg-6 col-sm-12 mt-2">
+                            <label
+                              for="data_hora_inicio"
+                              class="form-label"
+                              >Inicio:</label
+                            >
+                            <input
+                              class="form-control"
+                              type="datetime-local"
+                              name="data_hora_inicio"
+                              value="{{evento.data_inicio}}"
+                              id="data_hora_inicio"
+                              required />
+                          </div>
+                          <div class="col-lg-6 col-sm-12 mt-2">
+                            <label
+                              for="data_hora_fim"
+                              class="form-label"
+                              >Fim:</label
+                            >
+                            <input
+                              class="form-control"
+                              type="datetime-local"
+                              value="{{evento.data_fim}}"
+                              name="data_hora_fim"
+                              id="data_hora_fim"
+                              required />
+                          </div>
+                        </div>
+
+                        <div class="col-12 my-3">
+                          <input
+                            class="form-control"
+                            type="text"
+                            name="local"
+                            value="{{evento.local}}"
+                            id="local"
+                            placeholder="Local do evento"
+                            required />
+                        </div>
+                      </div>
+                      <div class="form-group mb-5">
+                        <div class="col-12">
+                          <textarea
+                            class="form-control"
+                            name="descricao"
+                            id="descricao"
+                            placeholder="Descricao do evento"
+                            rows="2"
+                            maxlength="120">
+{{evento.descricao}}</textarea
+                          >
+                        </div>
+                        <div class="row my-2">
+                          <div class="col-8">
+                            <label
+                              for="imagem"
+                              class="form-label"
+                              >Imagem de fundo:</label
+                            >
+                            <input
+                              class="form-control"
+                              type="file"
+                              name="imagem"
+                              id="imagem" />
+                          </div>
+
+                          <div class="col-4">
+                            <label
+                              for="cor"
+                              class="form-label"
+                              >Cor do calendario:</label
+                            >
+                            <input
+                              class="form-control"
+                              type="color"
+                              value="{{evento.cor}}"
+                              name="cor"
+                              id="cor" />
+                          </div>
+                        </div>
+
+                        <input
+                          name="organizador"
+                          value="{{evento.organizador_id}}"
+                          hidden />
+                        <input
+                          name="estado_evento"
+                          value="activo"
+                          hidden />
+                        <input
+                          name="id"
+                          value="{{evento.evento_id}}"
+                          hidden />
+                      </div>
+                      <div class="modal-footer w-100">
+                        <input
+                          class="btn btn_bg w-25"
+                          type="submit"
+                          value="Actualizar"
+                          name="eventoActualizar" />
+                      </div>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal editar eventos -->
+
+            {% else %}
+            <td
+              class="text-danger fs-4"
+              colspan="6">
+              Nenhum registo encontrado
+            </td>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div class="mt-5">
+      <h1 class="fs-2 mb-3 mt-5">Eventos Concluidos</h1>
+      <div>
+        <table class="table shadow table-hover">
+          <thead>
+            <tr>
+              <th scope="col">Titulo do Evento</th>
+              <th scope="col">Terminou</th>
+              <th scope="col">Local do Evento</th>
+              <th scope="col">Status</th>
+              <th
+                scope="col"
+                class="text-center">
+                Acções
+              </th>
+            </tr>
+          </thead>
+          <tbody class="">
+            {% for evento in eventosConcluidos %}
+            <tr>
+              <td>{{evento.nome}}</td>
+              <td>
+                <span class="">{{evento.data_fim}} | </span>
+                <span class="text-end fs-7">{{evento.hora_fim}} min</span>
+              </td>
+              <td>{{evento.local}}</td>
+              <td>{{evento.estado_evento}}</td>
+              <td class="text-center btn-outline-danger">
+                <span
+                  class="btn w-100"
+                  data-bs-toggle="modal"
+                  data-bs-target="#exampleModal1"
+                  ><i class="fa-solid fa-trash-can"></i>
+                </span>
+              </td>
+            </tr>
+            <!-- Modal -->
+            <div
+              class="modal fade"
+              id="exampleModal1"
+              tabindex="-1"
+              aria-labelledby="exampleModalLabel"
+              aria-hidden="true">
+              <div class="modal-dialog pt-5 mt-5">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h1
+                      class="modal-title fs-5"
+                      id="exampleModalLabel">
+                      Eliminar registo
+                    </h1>
+                    <button
+                      type="button"
+                      class="btn-close"
+                      data-bs-dismiss="modal"
+                      aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">Tem certeza que pretende apagar este evento?</div>
+                  <div class="modal-footer">
+                    <button
+                      onclick="openModal(false);"
+                      type="button"
+                      class="btn btn-secondary"
+                      data-bs-dismiss="modal">
+                      Não
+                    </button>
+                    <a
+                      href="index.php?page=evento&action=delete&id={{evento.evento_id}}"
+                      class="btn btn-primary"
+                      >Sim</a
+                    >
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% else %}
+            <td
+              class="text-danger fs-4"
+              colspan="6">
+              Nenhum registo encontrado
+            </td>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal registar eventos -->
+<div
+  class="modal fade w-100"
+  id="example"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog pt-5">
+    <div class="modal-content w-100">
+      <div class="modal-header">
+        <h1
+          class="modal-title fs-3"
+          id="exampleModalLabel">
+          Cadastrar evento
+        </h1>
+        <button
+          type="button"
+          class="btn-close me-3"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 w-100">
+        <form
+          onSubmit="return validate(this);"
+          class="w-100"
+          id="form"
+          method="POST"
+          enctype="multipart/form-data">
+          <div class="form-group my-2 row">
+            <div class="col-12">
+              <input
+                class="form-control"
+                type="text"
+                name="nome"
+                placeholder="Titulo do Evento"
+                id="nome"
+                maxlength="35"
+                required />
+            </div>
+            <div class="d-flex flex-lg-row flex-sm-column justify-content-between gap-2">
+              <div class="col-lg-6 col-sm-12 mt-2">
+                <label
+                  for="data_hora_inicio"
+                  class="form-label"
+                  >Inicio:</label
+                >
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  name="data_hora_inicio"
+                  id="data_hora_inicio"
+                  required />
+              </div>
+              <div class="col-lg-6 col-sm-12 mt-2">
+                <label
+                  for="data_hora_fim"
+                  class="form-label"
+                  >Fim:</label
+                >
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  name="data_hora_fim"
+                  id="data_hora_fim"
+                  required />
+              </div>
+            </div>
+
+            <div class="col-12 my-3">
+              <input
+                class="form-control"
+                type="text"
+                name="local"
+                id="local"
+                placeholder="Local do evento"
+                required />
+            </div>
+          </div>
+          <div class="form-group mb-3">
+            <div class="col-12">
+              <textarea
+                class="form-control"
+                name="descricao"
+                id="descricao"
+                placeholder="Descricao do evento"
+                rows="2"
+                maxlength="120"></textarea>
+            </div>
+            <div class="row my-2">
+              <div class="col-8">
+                <label
+                  for="imagem"
+                  class="form-label"
+                  >Imagem de fundo:</label
+                >
+                <input
+                  class="form-control"
+                  type="file"
+                  name="imagem"
+                  id="imagem" />
+              </div>
+
+              <div class="col-4">
+                <label
+                  for="cor"
+                  class="form-label"
+                  >Cor do calendario:</label
+                >
+                <input
+                  class="form-control"
+                  type="color"
+                  name="cor"
+                  id="cor" />
+              </div>
+            </div>
+
+            <input
+              name="organizador"
+              value="{{organizador.id}}"
+              hidden />
+            <input
+              name="estado_evento"
+              value="activo"
+              hidden />
+          </div>
+          <div class="modal-footer w-100">
+            <input
+              class="btn btn_bg"
+              type="submit"
+              value="Registar"
+              name="eventoPost" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal editar eventos -->
+<div
+  class="modal fade w-100"
+  id="exampleEditar"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog pt-5">
+    <div class="modal-content w-100">
+      <div class="modal-header">
+        <h1
+          class="modal-title fs-3"
+          id="exampleModalLabel">
+          Cadastrar evento
+        </h1>
+        <button
+          type="button"
+          class="btn-close me-3"
+          data-bs-dismiss="modal"
+          aria-label="Close"></button>
+      </div>
+      <div class="modal-body p-4 w-100">
+        <form
+          onSubmit="return validate(this);"
+          class="w-100"
+          id="form"
+          method="POST"
+          enctype="multipart/form-data">
+          <div class="form-group my-2 row">
+            <div class="col-12">
+              <input
+                class="form-control"
+                type="text"
+                name="nome"
+                placeholder="Titulo do Evento"
+                id="nome"
+                maxlength="35"
+                required />
+            </div>
+            <div class="d-flex flex-lg-row flex-sm-column justify-content-between gap-2">
+              <div class="col-lg-6 col-sm-12 mt-2">
+                <label
+                  for="data_hora_inicio"
+                  class="form-label"
+                  >Inicio:</label
+                >
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  name="data_hora_inicio"
+                  id="data_hora_inicio"
+                  required />
+              </div>
+              <div class="col-lg-6 col-sm-12 mt-2">
+                <label
+                  for="data_hora_fim"
+                  class="form-label"
+                  >Fim:</label
+                >
+                <input
+                  class="form-control"
+                  type="datetime-local"
+                  name="data_hora_fim"
+                  id="data_hora_fim"
+                  required />
+              </div>
+            </div>
+
+            <div class="col-12 my-3">
+              <input
+                class="form-control"
+                type="text"
+                name="local"
+                id="local"
+                placeholder="Local do evento"
+                required />
+            </div>
+          </div>
+          <div class="form-group mb-5">
+            <div class="col-12">
+              <textarea
+                class="form-control"
+                name="descricao"
+                id="descricao"
+                placeholder="Descricao do evento"
+                rows="2"
+                maxlength="120"></textarea>
+            </div>
+            <div class="row my-2">
+              <div class="col-8">
+                <label
+                  for="imagem"
+                  class="form-label"
+                  >Imagem de fundo:</label
+                >
+                <input
+                  class="form-control"
+                  type="file"
+                  name="imagem"
+                  id="imagem" />
+              </div>
+
+              <div class="col-4">
+                <label
+                  for="cor"
+                  class="form-label"
+                  >Cor do calendario:</label
+                >
+                <input
+                  class="form-control"
+                  type="color"
+                  name="cor"
+                  id="cor" />
+              </div>
+            </div>
+
+            <input
+              name="organizador"
+              value="{{organizador.id}}"
+              hidden />
+            <input
+              name="estado_evento"
+              value="activo"
+              hidden />
+          </div>
+          <div class="modal-footer w-100">
+            <input
+              class="btn btn_bg w-25"
+              type="submit"
+              value="Actualizar"
+              name="eventoActualizar" />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Modal editar eventos -->
